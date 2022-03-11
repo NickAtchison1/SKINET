@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SKINET.Core.Entities;
 using SKINET.Core.Interfaces;
+using SKINET.Core.Specifications;
 
 namespace SKINET.API.Controllers
 {
@@ -25,13 +26,17 @@ namespace SKINET.API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetProducts()
         {
-            var products = await _productsRepo.ListAllAsync();
+            var spec = new ProductsWithTypesAndBrandsSpecification();
+
+            var products = await _productsRepo.GetEntityWithSpec(spec);
             return Ok(products);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
+            var spec = new ProductsWithTypesAndBrandsSpecification(id);
+
             return await _productsRepo.GetByIdAsync(id);
         }
 
