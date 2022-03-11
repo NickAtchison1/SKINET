@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SKINET.API.Helpers;
 using SKINET.Core.Interfaces;
 using SKINET.Infrastructure.Data;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
+builder.Services.AddAutoMapper(typeof(MappingProfiles));
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddControllers();
@@ -25,6 +27,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 
