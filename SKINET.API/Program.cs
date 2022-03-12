@@ -15,9 +15,16 @@ builder.Services.AddAutoMapper(typeof(MappingProfiles));
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddControllers();
-builder.Services.Configure<ApiBehaviorOptions>(options =>
+builder.Services.AddCors(opt =>
 {
-    options.InvalidModelStateResponseFactory = actionContext =>
+    opt.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+    });
+});
+builder.Services.Configure<ApiBehaviorOptions>(opts =>
+{
+    opts.InvalidModelStateResponseFactory = actionContext =>
     {
         var errors = actionContext.ModelState
         .Where(e => e.Value.Errors.Count() > 0)
@@ -51,6 +58,7 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
+app.UseCors("CorsPolicy");
 app.UseAuthorization();
 
 app.MapControllers();
