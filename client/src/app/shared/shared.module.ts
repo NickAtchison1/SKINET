@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { PagerComponent } from './components/pager/pager.component';
 import { PagingHeaderComponent } from './components/paging-header/paging-header.component';
 
@@ -16,8 +16,9 @@ import { PagingHeaderComponent } from './components/paging-header/paging-header.
   ],
   imports: [
     CommonModule,
-    NgbPaginationModule
+    NgbPaginationModule,
+    NgbCarouselModule
   ],
-  exports: [NgbPaginationModule, PagingHeaderComponent, PagerComponent]
+  exports: [NgbPaginationModule, PagingHeaderComponent, PagerComponent, NgbCarouselModule]
 })
 export class SharedModule { }
